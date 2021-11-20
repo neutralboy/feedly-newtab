@@ -3,11 +3,13 @@ import React from "react";
 interface IAppContext{
     bgClass: string;
     num: number;
+    loggedIn: boolean;
 };
 
 const defState: IAppContext = {
     bgClass: "bg-gray-900",
-    num: 1
+    num: 1,
+    loggedIn: false
 };
 
 const AppContext = React.createContext<{ state: IAppContext, dispatch: React.Dispatch<AppActions> }>({
@@ -20,12 +22,13 @@ interface IAppProvider{
 };
 
 enum AppActionEnum {
-    Increment
+    Increment,
+    Login
 };
 
 interface AppActions {
     type: AppActionEnum;
-    payload: number;
+    payload?: number;
 };
 
 const AppReducer = (state: IAppContext, action: AppActions): IAppContext => {
@@ -38,6 +41,12 @@ const AppReducer = (state: IAppContext, action: AppActions): IAppContext => {
                 ...state,
                 num: state.num + 1
             };
+
+        case AppActionEnum.Login:
+            return {
+                ...state,
+                loggedIn: true
+            }
 
         default: 
             return state;

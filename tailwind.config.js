@@ -6,6 +6,11 @@ module.exports = {
       title: ['Lora', 'serif'],
       display: ['Shippori Antique', 'sans-serif'],
       body: ['Source Sans Pro', 'sans-serif']
+    },
+    extend: {
+      colors: {
+        feedly: "#2bb24c"
+      }
     }
   },
   variants: {
