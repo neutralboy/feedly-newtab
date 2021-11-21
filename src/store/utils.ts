@@ -9,4 +9,4 @@ const useQuery = () => {
 
 export {
     useQuery
-}
+};

@@ -6,6 +6,12 @@ interface LoginStamps {
     timestamp: Date;
 };
 
+interface IoAuthTokens {
+    id?: number;
+    timestamp: Date;
+    token: string;
+}
+
 interface AccessTokens {
     id?: number;
     timestamp: Date;
@@ -15,14 +21,16 @@ interface AccessTokens {
 }
 
 class MySubClassDexie extends Dexie{
-    loginStamps?: Table<LoginStamps>;
-    accessTokens?: Table<AccessTokens>;
+    loginStamps!: Table<LoginStamps>;
+    accessTokens!: Table<AccessTokens>;
+    oAuthTokens!: Table<IoAuthTokens>
 
     constructor() {
         super("feedlyTab");
         this.version(1).stores({
             loginStamps: '++id timestamp',
-            accessTokens: '++id timestamp'
+            accessTokens: '++id timestamp',
+            oAuthTokens: '++id timestamp',
         });
     }
 };

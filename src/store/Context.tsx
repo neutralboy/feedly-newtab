@@ -1,4 +1,5 @@
 import React from "react";
+import { db } from "../db";
 
 interface IAppContext{
     bgClass: string;
@@ -24,7 +25,8 @@ interface IAppProvider{
 
 enum AppActionEnum {
     Login,
-    SetAccessToken
+    SetAccessToken,
+    CheckLogin
 };
 
 interface AppActions {
@@ -44,10 +46,27 @@ const AppReducer = (state: IAppContext, action: AppActions): IAppContext => {
             };
 
         case AppActionEnum.SetAccessToken:
+            db.oAuthTokens.add({
+                timestamp: new Date(),
+                token: ( action.payload ? action.payload : "" )
+            }).then(e=>{
+                console.log("SAVED");
+                console.log(e);
+                return;
+            }).catch(e=>{
+                console.log(e);
+                console.log("DB error!")
+                return;
+            });
             return {
                 ...state,
                 accessToken: action.payload,
                 loggedIn: true
+            };
+
+        case AppActionEnum.CheckLogin:
+            return {
+                ...state
             };
 
         default: 

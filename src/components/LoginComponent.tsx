@@ -1,17 +1,6 @@
-import React, {useContext} from "react";
-
-import { AppContext, AppActionEnum } from "../store/Context";
-import { useQuery } from '../store/utils';
+import React from "react";
 
 const LoginComponent = ( ) => {
-
-    const { dispatch } = useContext(AppContext);
-    const query = useQuery();
-
-    const login = () => {
-        dispatch({ type: AppActionEnum.Login });
-        dispatch({ type:AppActionEnum.SetAccessToken, payload: query.get("code")?.toString() })
-    };
 
     return (
 

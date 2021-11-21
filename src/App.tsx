@@ -1,5 +1,5 @@
 import React, {useContext, useEffect}  from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { AppActionEnum, AppContext} from './store/Context';
 import LoginComponent from './components/LoginComponent';
@@ -9,7 +9,6 @@ import { useQuery } from './store/utils';
 const App = () => {
   const { state, dispatch } = useContext(AppContext);
   const query = useQuery();
-  let location = useLocation();
   let history = useNavigate();
 
   // Get access code and login
@@ -20,7 +19,6 @@ const App = () => {
     }else{
       console.log("NOT LOGGED IN");
     }
-
   };
 
   useEffect(() => {
