@@ -1,0 +1,11 @@
+{
+    "provider": "FeedlyLogin",
+    "is_new_account": false,
+    "plan": "standard",
+    "id": "ccd7e920-29d3-4bd1-b061-39406e2f05cc",
+    "scope": "https://cloud.feedly.com/subscriptions",
+    "refresh_token": "A1gQPIGz_EsMG0lT_68afF1kQuTZZivDr_8WS-uFQMD7F25OOH_WsRs3duNKF92JIl10CPkHo8G7okh_NegG-MwtBWePZV3SR7TlP9Q1DJ54kIKypkn9IicdXxI0caGPIAYWWMcrRqMd0vsepQJjfwhIBf4g5EGjPvVuXWfvsSu1U8WP9QggQh17p7TtXDzqmdMDAtgVa2BK4uTonRkvvVBnHaiVC1daT2U:sandbox",
+    "access_token": "A0f2HstObnGyOyP1T-4IX3l68CYBTWJ_gkGHM19oYrXr_Dp11JarMGUH8h5IAlk_CM0OSYGzkrsRRA8Goiaj_hgQg4VYuG0DmveDFqb9B-cjm0eHk68FbdjFGrqcwMPXPTpS80ii7qpuS7SJStSRvQc0SpZZzamG-NwLHBr217ChiP__84CZUxzgjmCW1MYOsUbz-RkA6naMd4TJJNFnwX7eHU_0xuydh4kE0y4C1XapdA47SV68AMDAfvQ_liN_XdDTjXCgcw:sandbox",
+    "token_type": "bearer",
+    "expires_in": 604800
+  }

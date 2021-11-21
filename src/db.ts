@@ -6,13 +6,23 @@ interface LoginStamps {
     timestamp: Date;
 };
 
+interface AccessTokens {
+    id?: number;
+    timestamp: Date;
+    accessToken: string;
+    refreshToken: string; 
+    expiresIn: string;
+}
+
 class MySubClassDexie extends Dexie{
     loginStamps?: Table<LoginStamps>;
+    accessTokens?: Table<AccessTokens>;
 
     constructor() {
         super("feedlyTab");
         this.version(1).stores({
-            loginStamps: '++id timestamp'
+            loginStamps: '++id timestamp',
+            accessTokens: '++id timestamp'
         });
     }
 };

@@ -47,6 +47,7 @@
     "dexie": "^3.2.0",
     "dexie-react-hooks": "^1.0.7",
     "postcss": "^7",
+    "react-router-dom": "^6.0.2",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat"
   }
 }

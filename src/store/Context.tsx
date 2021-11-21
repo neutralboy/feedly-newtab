@@ -4,6 +4,7 @@ interface IAppContext{
     bgClass: string;
     num: number;
     loggedIn: boolean;
+    accessToken?: string;
 };
 
 const defState: IAppContext = {
@@ -22,13 +23,13 @@ interface IAppProvider{
 };
 
 enum AppActionEnum {
-    Increment,
-    Login
+    Login,
+    SetAccessToken
 };
 
 interface AppActions {
     type: AppActionEnum;
-    payload?: number;
+    payload?: string;
 };
 
 const AppReducer = (state: IAppContext, action: AppActions): IAppContext => {
@@ -36,17 +37,18 @@ const AppReducer = (state: IAppContext, action: AppActions): IAppContext => {
     console.log( `%c${action.type}, %c${action.payload}`, 'color: green', 'color: yellow');
     switch(action.type) {
 
-        case AppActionEnum.Increment:
-            return {
-                ...state,
-                num: state.num + 1
-            };
-
         case AppActionEnum.Login:
             return {
                 ...state,
                 loggedIn: true
-            }
+            };
+
+        case AppActionEnum.SetAccessToken:
+            return {
+                ...state,
+                accessToken: action.payload,
+                loggedIn: true
+            };
 
         default: 
             return state;

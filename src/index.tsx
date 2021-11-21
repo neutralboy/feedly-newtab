@@ -2,6 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route
+} from "react-router-dom";
 
 import { AppProvider } from "./store/Context";
 
@@ -9,7 +14,12 @@ ReactDOM.render(
   <React.StrictMode>
     <AppProvider>
       <div className="font-body" >
-        <App />
+
+        <Router>
+          <Routes>
+            <Route path="/" element={<App />} />
+          </Routes>
+        </Router>
       </div>
     </AppProvider>
   </React.StrictMode>,

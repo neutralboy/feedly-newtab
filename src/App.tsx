@@ -1,15 +1,35 @@
 import React, {useContext, useEffect}  from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-import { AppContext} from './store/Context';
+import { AppActionEnum, AppContext} from './store/Context';
 import LoginComponent from './components/LoginComponent';
+import { useQuery } from './store/utils';
+
 
 const App = () => {
-  const { state } = useContext(AppContext);
+  const { state, dispatch } = useContext(AppContext);
+  const query = useQuery();
+  let location = useLocation();
+  let history = useNavigate();
 
+  // Get access code and login
+  const getAccessCode = () => {
+    if(query.get("code")){
+      dispatch({ type: AppActionEnum.SetAccessToken, payload: query.get("code")?.toString() });
+      history("/");
+    }else{
+      console.log("NOT LOGGED IN");
+    }
+
+  };
 
   useEffect(() => {
     console.log(state);
-  }, [state])
+  }, [state]);
+
+  useEffect(()=>{
+    getAccessCode();
+  }, [])
 
   return (
     <div className={` ${state.bgClass} min-h-screen `} >
@@ -22,6 +42,7 @@ const App = () => {
 
           { !state.loggedIn && <LoginComponent /> }
 
+          CODE: {query.get("code")}
         </div>
 
       </div>
