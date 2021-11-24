@@ -2,6 +2,7 @@ import React, {useContext, useEffect}  from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { AppActionEnum, AppContext} from './store/Context';
+import DisplayArticle from './components/DisplayArticle';
 import LoginComponent from './components/LoginComponent';
 import { useQuery } from './store/utils';
 
@@ -11,21 +12,38 @@ const App = () => {
   const query = useQuery();
   let history = useNavigate();
 
-  // Get access code and login
-  const getAccessCode = () => {
+
+  useEffect(()=>{
+      // Get access code and login
+  const getAccessCode = async () => {
     if(query.get("code")){
-      dispatch({ type: AppActionEnum.SetAccessToken, payload: query.get("code")?.toString() });
+      dispatch({ type: AppActionEnum.SetOAuthToken, payload: query.get("code")?.toString() });
       history("/");
+
+      const aT = await fetch(`${process.env.REACT_APP_FEEDLY_ROOT}/v3/auth/token`, {
+                  method: "post",
+                  body: JSON.stringify({
+                      code: query.get("code")?.toString(),
+                      client_id: process.env.REACT_APP_FEEDLY_CLIENT_ID,
+                      client_secret: process.env.REACT_APP_FEEDLY_CLIENT_SECRET,
+                      redirect_uri: process.env.REACT_APP_APP_URL,
+                      grant_type: "authorization_code"
+                  }),
+                  headers: {
+                      "Access-Control-Allow-Origin": "*",
+                      "Content-Type": "application/json"
+                  },
+                  mode: 'cors'
+              });
+      const aTJ = await aT.json();
+      dispatch({ type: AppActionEnum.SetAccessToken, payload: aTJ.access_token });
+      dispatch({ type: AppActionEnum.SetRefreshToken, payload: aTJ.refresh_token });
+
     }else{
       console.log("NOT LOGGED IN");
     }
   };
 
-  useEffect(() => {
-    console.log(state);
-  }, [state]);
-
-  useEffect(()=>{
     getAccessCode();
   }, [])
 
@@ -38,9 +56,14 @@ const App = () => {
 
         <div className='my-8' >
 
-          { !state.loggedIn && <LoginComponent /> }
+          { !state.loggedIn && <LoginComponent loading={state.loginLoading} /> }
 
-          CODE: {query.get("code")}
+          {
+            state.loggedIn && <div>
+                <DisplayArticle />
+            </div>
+          }
+
         </div>
 
       </div>

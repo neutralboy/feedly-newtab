@@ -1,17 +1,45 @@
 import React from "react";
-import { db } from "../db";
+
+import { IArticle } from "./types";
+
+// User Data Type
+interface IUser{
+    userId: string;
+    fullName: string;
+}
+
+
+// Article Ranking System
+enum ERankedBy{
+    Newest = "newest",
+    Oldest = "oldest",
+    Engangement = "engangement"
+};
 
 interface IAppContext{
     bgClass: string;
     num: number;
     loggedIn: boolean;
+    oAuthToken?: string;
+    refreshToken?: string;
     accessToken?: string;
+    loginLoading: boolean;
+    user?: IUser;
+    rankedBy: ERankedBy,
+    articles?: [IArticle]
 };
 
+// Default Context
 const defState: IAppContext = {
     bgClass: "bg-gray-900",
     num: 1,
-    loggedIn: false
+    loggedIn: false,
+    loginLoading: false,
+    user: {
+        userId: "",
+        fullName: "Feedly User"
+    },
+    rankedBy: ERankedBy.Engangement
 };
 
 const AppContext = React.createContext<{ state: IAppContext, dispatch: React.Dispatch<AppActions> }>({
@@ -25,15 +53,20 @@ interface IAppProvider{
 
 enum AppActionEnum {
     Login,
+    SetOAuthToken,
     SetAccessToken,
-    CheckLogin
+    SetRefreshToken,
+    CheckLogin,
+    SetUser
 };
 
 interface AppActions {
     type: AppActionEnum;
-    payload?: string;
+    payload?: string|IUser;
 };
 
+
+// App Reducer
 const AppReducer = (state: IAppContext, action: AppActions): IAppContext => {
     console.log(state);
     console.log( `%c${action.type}, %c${action.payload}`, 'color: green', 'color: yellow');
@@ -45,23 +78,25 @@ const AppReducer = (state: IAppContext, action: AppActions): IAppContext => {
                 loggedIn: true
             };
 
-        case AppActionEnum.SetAccessToken:
-            db.oAuthTokens.add({
-                timestamp: new Date(),
-                token: ( action.payload ? action.payload : "" )
-            }).then(e=>{
-                console.log("SAVED");
-                console.log(e);
-                return;
-            }).catch(e=>{
-                console.log(e);
-                console.log("DB error!")
-                return;
-            });
+        case AppActionEnum.SetOAuthToken:
             return {
                 ...state,
-                accessToken: action.payload,
-                loggedIn: true
+                oAuthToken: action.payload as string,
+                loginLoading: true
+            };
+
+        case AppActionEnum.SetAccessToken:
+            return {
+                ...state,
+                accessToken: action.payload as string ,
+                loggedIn: true,
+                loginLoading: false
+            };
+
+        case AppActionEnum.SetRefreshToken:
+            return {
+                ...state,
+                refreshToken: action.payload  as string 
             };
 
         case AppActionEnum.CheckLogin:
@@ -69,11 +104,22 @@ const AppReducer = (state: IAppContext, action: AppActions): IAppContext => {
                 ...state
             };
 
+        case AppActionEnum.SetUser:
+            return {
+                ...state,
+                user: {
+                    fullName: action.payload as IUser["fullName"],
+                    userId: action.payload as IUser["userId"]
+                }
+            }
+
+
         default: 
             return state;
     };
 };
 
+// React Provider
 const AppProvider = ({ children }: IAppProvider) => {
     const [state, dispatch] = React.useReducer(AppReducer, defState);
     return (
