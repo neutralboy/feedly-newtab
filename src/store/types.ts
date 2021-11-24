@@ -40,16 +40,27 @@ interface IArticle{
     id: string;
     originId?: string;
     title: string;
+    updated: number;
+    crawled: number;
+    published: number;
     keywords: [string];
-    published: BigInt;
-    canonicalUrl: string;
+    canonicalUrl?: string;
     categories: [ICategory];
     alternate: [IAlternate];
     origin: IOrigin;
     visual?: IVisual;
     summary?: ISummary;
     content?: IContent;
+    ampUrl?: string;
+    cdnAmpUrl?: string;
+    unread: boolean;
 };
 
 
-export type { IArticle };
+
+interface IArticleIds{
+    ids: [string];
+}
+
+
+export type { IArticle, IArticleIds };

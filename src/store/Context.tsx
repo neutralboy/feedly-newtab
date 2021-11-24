@@ -26,7 +26,8 @@ interface IAppContext{
     loginLoading: boolean;
     user?: IUser;
     rankedBy: ERankedBy,
-    articles?: [IArticle]
+    articles?: [IArticle],
+    articleIds?: [string]
 };
 
 // Default Context
@@ -57,18 +58,20 @@ enum AppActionEnum {
     SetAccessToken,
     SetRefreshToken,
     CheckLogin,
-    SetUser
+    SetUser,
+    SetArticles,
+    SetArticleIds
 };
 
 interface AppActions {
     type: AppActionEnum;
-    payload?: string|IUser;
+    payload?: string|IUser|[IArticle]|[string];
 };
 
 
 // App Reducer
 const AppReducer = (state: IAppContext, action: AppActions): IAppContext => {
-    console.log(state);
+    console.log(action);
     console.log( `%c${action.type}, %c${action.payload}`, 'color: green', 'color: yellow');
     switch(action.type) {
 
@@ -112,6 +115,18 @@ const AppReducer = (state: IAppContext, action: AppActions): IAppContext => {
                     userId: action.payload as IUser["userId"]
                 }
             }
+
+        case AppActionEnum.SetArticleIds:
+            return {
+                ...state,
+                articleIds: action.payload as [string]
+            };
+
+        case AppActionEnum.SetArticles:
+            return {
+                ...state,
+                articles: action.payload as [IArticle]
+            };
 
 
         default: 
