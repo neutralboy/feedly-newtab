@@ -1,5 +1,6 @@
 import React from "react";
 
+
 import { IArticle } from "./types";
 
 // User Data Type
@@ -7,7 +8,6 @@ interface IUser{
     userId: string;
     fullName: string;
 }
-
 
 // Article Ranking System
 enum ERankedBy{
@@ -18,6 +18,7 @@ enum ERankedBy{
 
 interface IAppContext{
     bgClass: string;
+    bgClass1: string;
     num: number;
     loggedIn: boolean;
     oAuthToken?: string;
@@ -26,13 +27,14 @@ interface IAppContext{
     loginLoading: boolean;
     user?: IUser;
     rankedBy: ERankedBy,
-    articles?: [IArticle],
-    articleIds?: [string]
+    articles?: IArticle[],
+    articleIds?: string[]
 };
 
 // Default Context
 const defState: IAppContext = {
     bgClass: "bg-gray-900",
+    bgClass1: "bg-gray-800",
     num: 1,
     loggedIn: false,
     loginLoading: false,
@@ -60,12 +62,13 @@ enum AppActionEnum {
     CheckLogin,
     SetUser,
     SetArticles,
-    SetArticleIds
+    SetArticleIds,
+    MarkArticleAsRead
 };
 
 interface AppActions {
     type: AppActionEnum;
-    payload?: string|IUser|[IArticle]|[string];
+    payload?: string|IUser|IArticle[]|[string];
 };
 
 
@@ -91,7 +94,7 @@ const AppReducer = (state: IAppContext, action: AppActions): IAppContext => {
         case AppActionEnum.SetAccessToken:
             return {
                 ...state,
-                accessToken: action.payload as string ,
+                accessToken: action.payload as string,
                 loggedIn: true,
                 loginLoading: false
             };
@@ -128,6 +131,11 @@ const AppReducer = (state: IAppContext, action: AppActions): IAppContext => {
                 articles: action.payload as [IArticle]
             };
 
+        case AppActionEnum.MarkArticleAsRead:
+            return {
+                ...state,
+                articles: state.articles?.filter(a => a.id !== action.payload as string)
+            };
 
         default: 
             return state;

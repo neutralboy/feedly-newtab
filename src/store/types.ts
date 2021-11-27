@@ -1,4 +1,3 @@
-
 interface ICategory{
     id: string;
     label: string;
@@ -56,11 +55,9 @@ interface IArticle{
     unread: boolean;
 };
 
-
-
 interface IArticleIds{
     ids: [string];
-}
+};
 
 
 export type { IArticle, IArticleIds };
