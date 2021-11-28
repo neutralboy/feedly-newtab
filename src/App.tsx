@@ -68,9 +68,13 @@ const App = () => {
           }
 
         </div>
+
       </div>
 
-        {
+
+
+
+      {
           state.loggedIn &&
           <div className={` ${state.bgClass1} flex shadow-md bottom-0 justify-between z-50 w-full py-4 sticky border-t-2 px-4 `} >
             <div>
@@ -89,8 +93,6 @@ const App = () => {
             </div>
           </div>
         }
-
-
 
     </div>
   );

@@ -25,7 +25,7 @@ interface IAppContext{
     refreshToken?: string;
     accessToken?: string;
     loginLoading: boolean;
-    user?: IUser;
+    user: { userId: string, fullName: string };
     rankedBy: ERankedBy,
     articles?: IArticle[],
     articleIds?: string[]
@@ -101,6 +101,7 @@ const AppReducer = (state: IAppContext, action: AppActions): IAppContext => {
 
         case AppActionEnum.SetRefreshToken:
             return {
+
                 ...state,
                 refreshToken: action.payload  as string 
             };
@@ -153,6 +154,10 @@ const AppProvider = ({ children }: IAppProvider) => {
 };
 
 const AppConsumer = AppContext.Consumer;
+
+export type {
+    IUser
+};
 
 export {
     AppContext,

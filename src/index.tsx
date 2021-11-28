@@ -14,7 +14,7 @@ import { AppProvider } from "./store/Context";
 ReactDOM.render(
   <React.StrictMode>
     <AppProvider>
-      <div className="font-body" >
+      <div className="font-body min-h-screen" >
 
         <Router>
           <Routes>
