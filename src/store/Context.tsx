@@ -25,10 +25,11 @@ interface IAppContext{
     refreshToken?: string;
     accessToken?: string;
     loginLoading: boolean;
-    user: { userId: string, fullName: string };
-    rankedBy: ERankedBy,
-    articles?: IArticle[],
-    articleIds?: string[]
+    rankedBy: ERankedBy;
+    articles?: IArticle[];
+    articleIds?: string[];
+    userId?: string;
+    fullName?: string;
 };
 
 // Default Context
@@ -38,10 +39,6 @@ const defState: IAppContext = {
     num: 1,
     loggedIn: false,
     loginLoading: false,
-    user: {
-        userId: "",
-        fullName: "Feedly User"
-    },
     rankedBy: ERankedBy.Engangement
 };
 
@@ -60,7 +57,8 @@ enum AppActionEnum {
     SetAccessToken,
     SetRefreshToken,
     CheckLogin,
-    SetUser,
+    SetUserId,
+    SetUserName,
     SetArticles,
     SetArticleIds,
     MarkArticleAsRead
@@ -111,13 +109,16 @@ const AppReducer = (state: IAppContext, action: AppActions): IAppContext => {
                 ...state
             };
 
-        case AppActionEnum.SetUser:
+        case AppActionEnum.SetUserId:
             return {
                 ...state,
-                user: {
-                    fullName: action.payload as IUser["fullName"],
-                    userId: action.payload as IUser["userId"]
-                }
+                userId: action.payload as string
+            };
+
+        case AppActionEnum.SetUserName:
+            return {
+                ...state,
+                fullName: action.payload as string
             }
 
         case AppActionEnum.SetArticleIds:
@@ -127,6 +128,7 @@ const AppReducer = (state: IAppContext, action: AppActions): IAppContext => {
             };
 
         case AppActionEnum.SetArticles:
+            console.log("ARTICLES: ", state.articles?.length);
             return {
                 ...state,
                 articles: action.payload as [IArticle]

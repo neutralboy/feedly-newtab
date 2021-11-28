@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 
-import {  AppContext, AppActionEnum } from "../store/Context";
+import {  AppContext, AppActionEnum, AppConsumer } from "../store/Context";
 import AllCaughtUp from "./AllCaughtUp";
 
 
@@ -34,11 +34,12 @@ const DisplayArticle = () => {
             }
         }).then(r=>r.json()).then((res)=>{
             dispatch({
-                type: AppActionEnum.SetUser,
-                payload: {
-                    fullName: res.fullName,
-                    userId: res.id
-                }
+                type: AppActionEnum.SetUserId,
+                payload: res.id
+            });
+            dispatch({
+                type: AppActionEnum.SetUserName,
+                payload: res.fullName
             });
             getEntries(res.id);
         }).catch(e=>console.log(e));
@@ -70,10 +71,18 @@ const DisplayArticle = () => {
         <div>
 
 
-            {
-                state.articles && <AllCaughtUp loading={displayLoadingState} cardBg={state.bgClass1} bg={state.bgClass} allCaughtUp={state.articles.length > 0 } />
-            }
-            
+            <AppConsumer>
+                {
+                    (ctx) => (
+                        <div>
+                            {
+                                ctx.state.articles && <AllCaughtUp loading={displayLoadingState} cardBg={state.bgClass1} bg={state.bgClass} allCaughtUp={ctx.state.articles.length > 0 } />
+                            }
+
+                        </div>
+                    )
+                }
+            </AppConsumer>
 
             {
                 state.articles && state.articles!.length > 0 && <div>
