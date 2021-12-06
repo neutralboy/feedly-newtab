@@ -49,7 +49,7 @@ const App = () => {
 
   return (
     <div className={` ${state.bgClass} min-h-screen `} >
-      <div className=' xl:container md:container mx-auto py-10' >
+      <div className=' xl:container md:container mx-auto py-1' >
 
 
         {

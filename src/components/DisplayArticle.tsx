@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 
 import {  AppContext, AppActionEnum, AppConsumer } from "../store/Context";
 import AllCaughtUp from "./AllCaughtUp";
+import ImageLoader from "../components/placeholders/ImageLoader";
 
 
 const DisplayArticle = () => {
@@ -76,7 +77,7 @@ const DisplayArticle = () => {
                     (ctx) => (
                         <div>
                             {
-                                ctx.state.articles && <AllCaughtUp loading={displayLoadingState} cardBg={state.bgClass1} bg={state.bgClass} allCaughtUp={ctx.state.articles.length > 0 } />
+                                ctx.state.articles && (ctx.state.articles.length === 0 ) && <AllCaughtUp loading={displayLoadingState} cardBg={state.bgClass1} bg={state.bgClass} allCaughtUp={ctx.state.articles.length > 0 } />
                             }
 
                         </div>
@@ -92,7 +93,7 @@ const DisplayArticle = () => {
                                     <div key={Math.random()} className="m-3 col-span-1 bg-gray-800 pt-3 rounded-md shadow-md hover:shadow-xl animate__fadeInUp animate__slow flex flex-col justify-between cursor-pointer" >
                                         <div className="px-3" > 
                                             <div>
-                                                <img className="h-40 mx-auto my-auto" src={i.visual?.url ? i.visual.url : "https://res.cloudinary.com/poorna/image/upload/c_scale,q_auto,w_350/v1637777081/feedly-logo-0bc7db153a894d0aa90b5ed31eec0398.png" } alt={i.title} />
+                                                <ImageLoader alt={i.title} imageUrl={i.visual?.url} />
                                             </div>
                                             <div className="flex justify-between mx-3 mt-3" >
                                                 <a href={i.origin.htmlUrl} className="text-feedly block my-auto hover:text-green-700" >{i.origin.title}</a>

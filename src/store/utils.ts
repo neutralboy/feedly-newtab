@@ -19,7 +19,7 @@ const loadMore = (userId: string, accessToken: string) => {
             "Authorization": `Bearer ${accessToken}`
         }
     }).then(r=>r.json())
-    .then(res=>res.items as IArticle[] )
+    .then((res)=>res.items)
     .catch(e=>console.log(e));
     return ge;
 };
